@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta
+      name="description"
+      content="管理大学 EMBA 日本模块电子行程，适合在微信中打开查看的一周培训 H5 页面。"
+    />
+    <title>管理大学 EMBA 日本模块</title>
+    <style>
+      :root {
+        --bg: #f6f2ea;
+        --bg-soft: rgba(255, 255, 255, 0.88);
+        --panel: rgba(255, 255, 255, 0.88);
+        --panel-strong: rgba(255, 253, 248, 0.96);
+        --text: #1f2642;
+        --muted: #68718a;
+        --line: rgba(20, 28, 82, 0.12);
+        --gold: #8a704c;
+        --gold-strong: #8a704c;
+        --gold-shadow: rgba(138, 112, 76, 0.16);
+        --blue: #141c52;
+        --success: #52618f;
+        --radius: 24px;
+        --radius-sm: 18px;
+        --max-width: 460px;
+        --shadow: 0 24px 60px rgba(20, 28, 82, 0.1);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scroll-snap-type: y proximity;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, rgba(20, 28, 82, 0.07), transparent 28%),
+          radial-gradient(circle at 80% 10%, rgba(138, 112, 76, 0.1), transparent 18%),
+          linear-gradient(180deg, #faf7f1 0%, #f5efe5 100%);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background:
+          linear-gradient(125deg, rgba(20, 28, 82, 0.02), transparent 24%),
+          linear-gradient(330deg, rgba(20, 28, 82, 0.02), transparent 22%);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .app {
+        width: min(100%, var(--max-width));
+        margin: 0 auto;
+        padding: 22px 14px 40px;
+        position: relative;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 12px;
+        z-index: 20;
+        margin-bottom: 18px;
+      }
+
+      .topbar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 16px;
+        border: 1px solid rgba(20, 28, 82, 0.08);
+        border-radius: 999px;
+        backdrop-filter: blur(20px);
+        background: rgba(255, 255, 255, 0.82);
+        box-shadow: 0 12px 30px rgba(20, 28, 82, 0.08);
+      }
+
+      .brand {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+        justify-content: center;
+      }
+
+      .brand-logo {
+        width: 132px;
+        height: 38px;
+        object-fit: contain;
+        object-position: left center;
+        display: none;
+      }
+
+      .brand-mark {
+        font-size: 11px;
+        letter-spacing: 0.24em;
+        text-transform: uppercase;
+        color: var(--gold);
+      }
+
+      .brand-name {
+        font-size: 13px;
+        color: var(--blue);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .topbar-action {
+        font-size: 12px;
+        color: #fff;
+        border: 1px solid transparent;
+        border-radius: 999px;
+        padding: 8px 12px;
+        flex-shrink: 0;
+        background: var(--blue);
+      }
+
+      .hero {
+        position: relative;
+        overflow: hidden;
+        border-radius: 34px;
+        min-height: 86vh;
+        padding: 28px 20px 26px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(255, 252, 246, 0.56)),
+          radial-gradient(circle at 76% 18%, rgba(138, 112, 76, 0.08), transparent 16%),
+          radial-gradient(circle at 14% 18%, rgba(20, 28, 82, 0.06), transparent 20%),
+          url("assets/images/backgroud.png") center/cover no-repeat;
+        box-shadow: var(--shadow);
+        isolation: isolate;
+        scroll-snap-align: start;
+        opacity: 1;
+        filter: none;
+        transform: none;
+      }
+
+      .hero h1,
+      .hero .subtitle,
+      .hero .brand-name,
+      .hero .hero-school strong,
+      .hero .hero-school span {
+        text-shadow: 0 2px 12px rgba(255, 255, 255, 0.22);
+      }
+
+      .hero::before,
+      .hero::after {
+        content: "";
+        position: absolute;
+        border-radius: 999px;
+        filter: blur(2px);
+        opacity: 0.6;
+        z-index: -1;
+      }
+
+      .hero::before {
+        width: 180px;
+        height: 180px;
+        top: -40px;
+        right: -50px;
+        background: radial-gradient(circle, rgba(138, 112, 76, 0.18), transparent 70%);
+      }
+
+      .hero::after {
+        width: 120px;
+        height: 120px;
+        left: -24px;
+        bottom: 140px;
+        background: radial-gradient(circle, rgba(20, 28, 82, 0.14), transparent 68%);
+      }
+
+      .hero-badge,
+      .section-eyebrow,
+      .card-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(138, 112, 76, 0.22);
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(12px);
+        color: var(--gold-strong);
+        font-size: 11px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .hero-badge::before,
+      .section-eyebrow::before,
+      .card-eyebrow::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--gold);
+        box-shadow: 0 0 12px var(--gold-shadow);
+      }
+
+      .hero-copy {
+        display: grid;
+        gap: 18px;
+        padding-top: 34px;
+      }
+
+      .hero h1 {
+        margin: 0;
+        font-size: clamp(36px, 9vw, 50px);
+        line-height: 1.05;
+        font-weight: 600;
+        letter-spacing: -0.04em;
+      }
+
+      .hero .subtitle {
+        font-size: 17px;
+        line-height: 1.7;
+        color: var(--muted);
+      }
+
+      .hero-meta {
+        display: grid;
+        gap: 14px;
+      }
+
+      .meta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .meta-chip {
+        padding: 10px 12px;
+        border-radius: 16px;
+        font-size: 12px;
+        color: var(--blue);
+        background: rgba(20, 28, 82, 0.04);
+        border: 1px solid rgba(20, 28, 82, 0.08);
+        backdrop-filter: blur(12px);
+      }
+
+      .hero-footer {
+        display: grid;
+        gap: 14px;
+      }
+
+      .hero-footer p,
+      .section-text,
+      .overview-card p,
+      .note-item p,
+      .person-card p,
+      .day-summary,
+      .status-chip,
+      .timeline-content p,
+      .footer-copy p {
+        margin: 0;
+      }
+
+      .hero-footer p {
+        color: var(--muted);
+        line-height: 1.7;
+        font-size: 14px;
+      }
+
+      .hero-arrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        width: fit-content;
+        padding: 12px 16px;
+        border-radius: 999px;
+        background: var(--blue);
+        border: 1px solid transparent;
+        color: #fff;
+        font-size: 13px;
+      }
+
+      .section {
+        position: relative;
+        margin-top: 18px;
+        padding: 22px 18px;
+        border-radius: 28px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(255, 252, 246, 0.98));
+        border: 1px solid rgba(20, 28, 82, 0.08);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        scroll-snap-align: start;
+        min-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        opacity: 1;
+        filter: none;
+        transform: none;
+      }
+
+      .section::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient(150deg, rgba(138, 112, 76, 0.06), transparent 30%);
+      }
+
+      .section-header {
+        display: grid;
+        gap: 10px;
+        margin-bottom: 18px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .section-title {
+        margin: 0;
+        font-size: 28px;
+        line-height: 1.15;
+        letter-spacing: -0.03em;
+      }
+
+      .section-text {
+        font-size: 14px;
+        line-height: 1.75;
+        color: var(--muted);
+      }
+
+      .overview-grid,
+      .person-grid,
+      .notes-grid,
+      .highlight-grid {
+        display: grid;
+        gap: 14px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .overview-card,
+      .person-card,
+      .note-item,
+      .highlight-card {
+        padding: 18px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.98);
+        border: 1px solid rgba(20, 28, 82, 0.08);
+      }
+
+      .overview-card span,
+      .highlight-card span {
+        display: block;
+        font-size: 12px;
+        color: var(--gold);
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+
+      .overview-card strong,
+      .highlight-card strong,
+      .person-card strong,
+      .day-title strong {
+        display: block;
+        font-size: 20px;
+        line-height: 1.35;
+        margin-bottom: 10px;
+        color: var(--text);
+      }
+
+      .overview-card p,
+      .highlight-card p,
+      .person-card p,
+      .note-item p {
+        color: var(--muted);
+        line-height: 1.7;
+        font-size: 14px;
+      }
+
+      .overview-card ul,
+      .person-card ul,
+      .note-item ul,
+      .day-tags {
+        margin: 12px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .overview-card li,
+      .person-card li,
+      .note-item li {
+        position: relative;
+        padding-left: 14px;
+        margin-top: 8px;
+        color: var(--text);
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .overview-card li::before,
+      .person-card li::before,
+      .note-item li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 9px;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--gold);
+      }
+
+      .day-nav {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        padding: 4px 0 2px;
+        scrollbar-width: none;
+        position: sticky;
+        top: 82px;
+        z-index: 12;
+        margin: 20px 0 10px;
+      }
+
+      .day-nav::-webkit-scrollbar {
+        display: none;
+      }
+
+      .day-link {
+        white-space: nowrap;
+        padding: 10px 14px;
+        border-radius: 999px;
+        font-size: 12px;
+        color: var(--blue);
+        border: 1px solid rgba(20, 28, 82, 0.08);
+        background: rgba(255, 255, 255, 0.72);
+        backdrop-filter: blur(12px);
+        transition: 0.25s ease;
+      }
+
+      .day-link.active {
+        color: #fff;
+        background: var(--blue);
+        border-color: transparent;
+        box-shadow: 0 10px 30px rgba(20, 28, 82, 0.16);
+      }
+
+      .day-list {
+        display: grid;
+        gap: 18px;
+      }
+
+      .day-card {
+        position: relative;
+        padding: 18px;
+        border-radius: 26px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.99), rgba(252, 249, 243, 0.98)),
+          radial-gradient(circle at top right, rgba(138, 112, 76, 0.08), transparent 24%);
+        border: 1px solid rgba(20, 28, 82, 0.08);
+        overflow: hidden;
+        opacity: 1;
+        filter: none;
+        transform: none;
+      }
+
+      .enhanced-motion .day-card {
+        opacity: 0;
+        transform: translateY(28px) scale(0.96);
+        transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.35s ease;
+        transition-delay: calc(var(--card-index, 0) * 50ms);
+      }
+
+      .enhanced-motion .day-card.is-visible {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+
+      .enhanced-motion .day-card.is-visible:hover,
+      .day-card:hover {
+        box-shadow: 0 18px 44px rgba(20, 28, 82, 0.1);
+      }
+
+      .day-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(199, 169, 107, 0.6), transparent);
+      }
+
+      .day-head {
+        display: grid;
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+
+      .day-kicker {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      .day-code {
+        font-size: 14px;
+        color: var(--gold-strong);
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .status-chip {
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 11px;
+        color: var(--success);
+        border: 1px solid rgba(199, 169, 107, 0.24);
+        background: rgba(199, 169, 107, 0.08);
+      }
+
+      .day-title {
+        display: grid;
+        gap: 6px;
+      }
+
+      .day-title strong {
+        font-size: 24px;
+        margin-bottom: 0;
+      }
+
+      .day-title span {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .day-summary {
+        font-size: 14px;
+        color: var(--muted);
+        line-height: 1.8;
+        padding: 14px 0 16px;
+        border-top: 1px solid var(--line);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .day-tags {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .day-tags li {
+        padding: 8px 10px;
+        border-radius: 999px;
+        font-size: 12px;
+        color: var(--blue);
+        background: rgba(20, 28, 82, 0.04);
+        border: 1px solid rgba(20, 28, 82, 0.08);
+      }
+
+      .timeline {
+        display: grid;
+        gap: 12px;
+        margin-top: 16px;
+      }
+
+      .timeline-item {
+        display: grid;
+        grid-template-columns: 72px 1fr;
+        gap: 12px;
+        align-items: start;
+        opacity: 1;
+        filter: none;
+        transform: none;
+      }
+
+      .enhanced-motion .timeline-item {
+        opacity: 0;
+        transform: translateX(12px);
+        transition: opacity 0.4s ease, transform 0.4s ease;
+        transition-delay: calc(var(--item-index, 0) * 70ms + 80ms);
+      }
+
+      .enhanced-motion .day-card.is-visible .timeline-item {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      .timeline-time {
+        font-size: 12px;
+        color: var(--gold-strong);
+        letter-spacing: 0.04em;
+        padding-top: 4px;
+      }
+
+      .timeline-content {
+        position: relative;
+        padding: 14px 14px 14px 18px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.98);
+        border: 1px solid rgba(20, 28, 82, 0.08);
+      }
+
+      .timeline-content::before {
+        content: "";
+        position: absolute;
+        left: 8px;
+        top: 18px;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--gold);
+      }
+
+      .timeline-content strong {
+        display: block;
+        font-size: 15px;
+        margin-bottom: 6px;
+      }
+
+      .timeline-content p {
+        font-size: 13px;
+        line-height: 1.7;
+        color: var(--muted);
+      }
+
+      .image-panel {
+        margin-top: 14px;
+        position: relative;
+        height: 180px;
+        border-radius: 22px;
+        border: 1px solid rgba(20, 28, 82, 0.08);
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(248, 243, 235, 0.92)),
+          radial-gradient(circle at 18% 24%, rgba(138, 112, 76, 0.14), transparent 18%),
+          radial-gradient(circle at 76% 42%, rgba(20, 28, 82, 0.12), transparent 22%);
+        overflow: hidden;
+      }
+
+      .image-panel::before,
+      .image-panel::after {
+        content: "";
+        position: absolute;
+        border-radius: 999px;
+      }
+
+      .image-panel::before {
+        inset: 28px auto auto 18px;
+        width: 120px;
+        height: 120px;
+        border: 1px solid rgba(199, 169, 107, 0.14);
+        background: radial-gradient(circle, rgba(199, 169, 107, 0.12), transparent 68%);
+      }
+
+      .image-panel::after {
+        right: 20px;
+        bottom: 18px;
+        width: 160px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(199, 169, 107, 0.55), transparent);
+        border-radius: 0;
+      }
+
+      .person-card strong {
+        font-size: 18px;
+      }
+
+      .person-card {
+        padding: 0;
+        overflow: hidden;
+        background: rgba(255, 255, 255, 0.98);
+      }
+
+      .person-photo,
+      .company-photo {
+        width: 100%;
+        display: block;
+        object-fit: cover;
+        background: rgba(20, 28, 82, 0.04);
+      }
+
+      .person-photo {
+        aspect-ratio: 4 / 3;
+        object-position: center top;
+      }
+
+      .person-body,
+      .company-body {
+        padding: 18px;
+      }
+
+      .person-grid,
+      .company-grid {
+        align-items: start;
+      }
+
+      .person-role {
+        color: var(--gold);
+        font-size: 13px;
+        margin-bottom: 12px;
+        line-height: 1.6;
+      }
+
+      .company-grid {
+        display: grid;
+        gap: 14px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .company-card {
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.98);
+        border: 1px solid rgba(20, 28, 82, 0.08);
+        overflow: hidden;
+      }
+
+      .company-photo {
+        aspect-ratio: 16 / 9;
+        object-position: center;
+      }
+
+      .company-photo.logo-only {
+        object-fit: contain;
+        padding: 22px;
+        background: rgba(255, 255, 255, 0.98);
+      }
+
+      .company-photo.tall-logo {
+        object-fit: cover;
+      }
+
+      .company-placeholder {
+        aspect-ratio: 16 / 9;
+        display: grid;
+        place-items: center;
+        padding: 20px;
+        text-align: center;
+        background:
+          linear-gradient(135deg, rgba(20, 28, 82, 0.92), rgba(38, 52, 110, 0.92)),
+          radial-gradient(circle at top right, rgba(138, 112, 76, 0.24), transparent 20%);
+        color: #fff;
+      }
+
+      .company-placeholder strong {
+        color: #fff;
+        font-size: 24px;
+        line-height: 1.25;
+        letter-spacing: 0.08em;
+      }
+
+      .company-meta {
+        display: inline-flex;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(20, 28, 82, 0.05);
+        color: var(--gold);
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+      }
+
+      .company-card strong {
+        font-size: 18px;
+        margin-bottom: 8px;
+      }
+
+      .company-card p {
+        color: var(--muted);
+        line-height: 1.7;
+        font-size: 14px;
+      }
+
+      .company-card ul {
+        margin: 12px 0 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .company-card li {
+        position: relative;
+        padding-left: 14px;
+        margin-top: 8px;
+        color: var(--text);
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .company-card li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 9px;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--gold);
+      }
+
+      .logo-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 14px;
+      }
+
+      .logo-card {
+        padding: 14px;
+        border-radius: 18px;
+        border: 1px solid rgba(20, 28, 82, 0.08);
+        background: rgba(255, 255, 255, 0.98);
+        display: grid;
+        gap: 10px;
+        place-items: center;
+        text-align: center;
+      }
+
+      .logo-card img {
+        width: 100%;
+        height: 56px;
+        object-fit: contain;
+        object-position: center;
+      }
+
+      .logo-card span {
+        font-size: 11px;
+        color: var(--blue);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .footer-copy {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        gap: 12px;
+      }
+
+      .footer-copy h2 {
+        margin: 0;
+        font-size: 32px;
+        line-height: 1.1;
+      }
+
+      .footer-copy p {
+        color: var(--muted);
+        line-height: 1.8;
+        font-size: 14px;
+      }
+
+      .footer-note {
+        display: inline-flex;
+        width: fit-content;
+        padding: 10px 12px;
+        border-radius: 999px;
+        background: rgba(20, 28, 82, 0.05);
+        border: 1px solid rgba(20, 28, 82, 0.08);
+        color: var(--blue);
+        font-size: 12px;
+      }
+
+      .credit {
+        text-align: center;
+        margin-top: 16px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.8;
+      }
+
+      @media (min-width: 640px) {
+        .app {
+          padding-left: 18px;
+          padding-right: 18px;
+        }
+
+        .hero {
+          min-height: 760px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="app">
+      <header class="topbar">
+        <div class="topbar-inner">
+          <div class="brand">
+            <img class="brand-logo" src="assets/images/logo-smu.png" alt="SMU logo" />
+            <span class="brand-mark">SMU EMBA</span>
+            <span class="brand-name">SMU 中文 EMBA 日本模块</span>
+          </div>
+          <a class="topbar-action" href="#schedule">查看日程</a>
+        </div>
+      </header>
+
+      <section class="hero active" id="top">
+        <div class="hero-copy">
+          <span class="hero-badge">Japan Module</span>
+          <div>
+            <h1>SMU 中文 EMBA 日本模块</h1>
+          </div>
+          <div class="hero-meta">
+            <div class="meta-row">
+              <span class="meta-chip">2026.11.15 - 2026.11.21</span>
+              <span class="meta-chip">Tokyo / Yokohama / Yamanashi</span>
+            </div>
+            <div class="meta-row">
+              <span class="meta-chip">高校课程</span>
+              <span class="meta-chip">企业参访</span>
+              <span class="meta-chip">文化体验</span>
+              <span class="meta-chip">EMBA 结业仪式</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-footer">
+          <a class="hero-arrow" href="#overview">向下查看全程安排</a>
+        </div>
+      </section>
+
+      <section class="section" id="overview">
+        <div class="section-header">
+          <span class="section-eyebrow">Program Overview</span>
+          <h2 class="section-title">项目概览与亮点</h2>
+          <p class="section-text">
+            本次模块围绕学术研修、企业参访、专题交流与文化体验展开，以课堂学习、产业观察与跨文化体验相结合的方式，帮助学员建立更完整的日本观察框架。
+          </p>
+        </div>
+        <div class="overview-grid">
+          <article class="overview-card">
+            <span>Program</span>
+            <strong>一周高密度培训安排</strong>
+            <p>行程自欢迎晚宴展开，经由高校课程、企业参访、城市观察与结业仪式完整推进。</p>
+            <ul>
+              <li>培训周期：2026年11月15日 - 11月21日</li>
+              <li>入住酒店：三井ガーデンホテル六本木プレミア</li>
+              <li>覆盖东京、横滨、山梨等城市与机构</li>
+            </ul>
+          </article>
+          <article class="overview-card">
+            <span>Format</span>
+            <strong>课堂、参访、交流与体验并行</strong>
+            <p>从教授课程到企业现场，再到专题交流与文化体验，形成兼具深度与节奏感的学习结构。</p>
+            <ul>
+              <li>东京大学、早稻田大学专题授课</li>
+              <li>FANUC、GROOVE X、寿屋、三菱地所等参访</li>
+              <li>明治神宫、剑道课程与 EMBA 结业仪式</li>
+            </ul>
+          </article>
+        </div>
+        <div class="section-header" style="margin-top: 24px; margin-bottom: 14px;">
+          <span class="section-eyebrow">Highlights</span>
+          <h2 class="section-title" style="font-size: 24px;">项目亮点</h2>
+        </div>
+        <div class="highlight-grid">
+          <article class="highlight-card">
+            <span>01</span>
+            <strong>名校课堂，研判日本经济与产业变迁</strong>
+            <p>走进东京大学、早稻田大学，在教授引导下理解日本经济现状、优势产业与企业竞争力。</p>
+          </article>
+          <article class="highlight-card">
+            <span>02</span>
+            <strong>走进产业现场，观察日本企业创新实践</strong>
+            <p>探访发那科、GROOVE X、寿屋及三菱地所等代表性机构，观察日本企业的经营逻辑与创新路径。</p>
+          </article>
+          <article class="highlight-card">
+            <span>03</span>
+            <strong>聚焦日本市场，交流企业出海机遇</strong>
+            <p>围绕“出海日本的机遇与挑战”开展专题交流，帮助学员了解市场环境、落地实践与跨境经营中的关键问题。</p>
+          </article>
+          <article class="highlight-card">
+            <span>04</span>
+            <strong>融合文化体验，拓展国际化视野</strong>
+            <p>通过明治神宫、剑道体验及 EMBA 结业仪式等安排，在商业学习之外感受日本文化与社会脉络。</p>
+          </article>
+        </div>
+        <div class="image-panel" aria-hidden="true"></div>
+      </section>
+
+      <nav class="day-nav" id="schedule"></nav>
+
+      <section class="section">
+        <div class="section-header">
+          <span class="section-eyebrow">Schedule</span>
+          <h2 class="section-title">七日行程</h2>
+          <p class="section-text">
+            以下为本次赴日培训的完整日程安排，已按 H5 浏览体验重新整合为移动端卡片式结构，便于学员在微信中快速查看每日重点。
+          </p>
+        </div>
+        <div class="day-list" id="day-list"></div>
+      </section>
+
+      <section class="section" id="faculty">
+        <div class="section-header">
+          <span class="section-eyebrow">讲师</span>
+          <h2 class="section-title">授课讲师</h2>
+        </div>
+        <div class="person-grid">
+          <article class="person-card">
+            <img class="person-photo" src="assets/images/marukawa.jpg" alt="丸川知雄教授" />
+            <div class="person-body">
+              <span class="card-eyebrow">东京大学</span>
+              <strong>丸川知雄</strong>
+              <p class="person-role">东京大学社会科学研究所 比较现代社会教授</p>
+              <p>授课主题：日本经济现状与中国企业全球竞争力的思考。</p>
+              <ul>
+                <li>课程安排于 11 月 16 日上午</li>
+                <li>地点：东京大学社会科学研究所第二会议室</li>
+              </ul>
+            </div>
+          </article>
+          <article class="person-card">
+            <img class="person-photo" src="assets/images/qingxiu.jpg" alt="樋口清秀教授" />
+            <div class="person-body">
+              <span class="card-eyebrow">早稻田大学</span>
+              <strong>樋口清秀</strong>
+              <p class="person-role">早稻田大学国际学术院名誉教授</p>
+              <p>授课主题：日本优势产业图谱及“失去的三十年”。</p>
+              <ul>
+                <li>课程安排于 11 月 18 日上午</li>
+                <li>地点：西早稻田校区 55-S-510</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="companies">
+        <div class="section-header">
+          <span class="section-eyebrow">参访企业</span>
+          <h2 class="section-title">参访企业</h2>
+        </div>
+        <div class="company-grid">
+          <article class="company-card">
+            <img class="company-photo" src="assets/images/fanuc.jpg" alt="FANUC 企业图片" />
+            <div class="company-body">
+              <span class="company-meta">先进制造</span>
+              <strong>FANUC</strong>
+              <p>重点观察自动化制造、工厂见学、展示场与企业交流。</p>
+            </div>
+          </article>
+          <article class="company-card">
+            <img class="company-photo" src="assets/images/GROOVE X.jpeg" alt="GROOVE X LOVOT" />
+            <div class="company-body">
+              <span class="company-meta">机器人</span>
+              <strong>GROOVE X</strong>
+              <p>通过 LOVOT 体验日本机器人创新如何从技术延伸到情感价值与陪伴体验。</p>
+            </div>
+          </article>
+          <article class="company-card">
+            <img class="company-photo" src="assets/images/mitsubishi-jisho-design.png" alt="三菱地所设计图片" />
+            <div class="company-body">
+              <span class="company-meta">城市更新</span>
+              <strong>三菱地所设计</strong>
+              <p>结合丸之内与皇居周边，理解日本城市更新、空间设计与区域运营逻辑。</p>
+            </div>
+          </article>
+          <article class="company-card">
+            <img class="company-photo tall-logo" src="assets/images/shouwu.jpg" alt="株式会社寿屋" />
+            <div class="company-body">
+              <span class="company-meta">企业经营</span>
+              <strong>株式会社寿屋</strong>
+              <p>重点了解企业经营、业务介绍、展厅参观、座谈交流与品牌发展实践。</p>
+            </div>
+          </article>
+          <article class="company-card">
+            <div class="company-placeholder" aria-hidden="true">
+              <strong>东京证券交易所</strong>
+            </div>
+            <div class="company-body">
+              <span class="company-meta">资本市场</span>
+              <strong>东京证券交易所</strong>
+              <p>重点观察日本资本市场运作、交易所参访流程与产业金融生态。</p>
+            </div>
+          </article>
+          <article class="company-card">
+            <img class="company-photo logo-only" src="assets/images/sony.png" alt="索尼" />
+            <div class="company-body">
+              <span class="company-meta">品牌创新</span>
+              <strong>索尼</strong>
+              <p>重点关注产品创新、品牌体验、企业交流与代表性日本品牌的经营逻辑。</p>
+            </div>
+          </article>
+          <article class="company-card">
+            <img class="company-photo" src="assets/images/muji.jpg" alt="无印良品" />
+            <div class="company-body">
+              <span class="company-meta">零售品牌</span>
+              <strong>无印良品</strong>
+              <p>重点观察品牌理念、门店空间、商品陈列与生活方式零售的运营表达。</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <span class="section-eyebrow">Travel Notes</span>
+          <h2 class="section-title">出行须知</h2>
+          <p class="section-text">
+            以下信息适合作为学员统一阅读的说明页，后续也可以继续补充集合联系人、车辆信息或紧急联络方式。
+          </p>
+        </div>
+        <div class="notes-grid">
+          <article class="note-item">
+            <span class="card-eyebrow">Time</span>
+            <p>每日请按通知时间提前 5 至 10 分钟于酒店大堂集合，具体以带队老师最新通知为准。</p>
+          </article>
+          <article class="note-item">
+            <span class="card-eyebrow">Dress Code</span>
+            <p>建议穿着商务休闲服装与舒适步行鞋，行程涉及高校、企业及较长距离移动。</p>
+          </article>
+          <article class="note-item">
+            <span class="card-eyebrow">Documents</span>
+            <p>请随身携带护照及必要证件，部分场地需进行统一入场登记或身份确认。</p>
+          </article>
+          <article class="note-item">
+            <span class="card-eyebrow">Updates</span>
+            <p>如遇企业接待、车辆或时段调整，页面内容与现场安排将以最终通知版本为准。</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="footer-copy">
+          <span class="section-eyebrow">Closing Note</span>
+          <h2>A Week of Insight, Exchange and Inspiration</h2>
+          <p>
+            在一周的学习与交流中，理解日本，观察产业，沉淀经验，并以更开阔的全球视野回到管理与实践现场。
+          </p>
+          <span class="footer-note">SMU EMBA Japan Module</span>
+        </div>
+      </section>
+
+      <p class="credit">
+        Singapore Management University<br />
+        SMU EMBA Japan Module · Mobile H5 Itinerary
+      </p>
+    </main>
+
+    <script>
+      const days = [
+        {
+          id: "day1",
+          code: "Day 1",
+          date: "11月15日 周日",
+          title: "启程与欢迎晚宴",
+          status: "欢迎与报到",
+          summary:
+            "学员抵达东京后，于六本木参加欢迎晚宴，在轻松而正式的交流氛围中开启本次 EMBA 日本模块。",
+          tags: ["欢迎晚宴", "东京抵达", "项目启动"],
+          timeline: [
+            {
+              time: "晚间",
+              title: "欢迎晚宴",
+              content:
+                "地点为京都瓢嘻 六本木店，地址：東京都港区六本木6丁目7-7 MERCURY六本木 1F, 2F。适合作为项目开场与嘉宾会面环节。"
+            },
+            {
+              time: "18:00",
+              title: "宾客集合与步行抵达",
+              content: "酒店至餐厅约 400 米，预计步行 5 分钟，可作为学员首晚的轻松集合动线。"
+            }
+          ]
+        },
+        {
+          id: "day2",
+          code: "Day 2",
+          date: "11月16日 周一",
+          title: "东京大学课程与养老院参访",
+          status: "课程 + 实地交流",
+          summary:
+            "从东京大学的开课仪式与专题课程开始，延伸至横滨养老机构参访，形成从宏观经济理解到社会服务实践观察的完整一天。",
+          tags: ["东京大学", "养老服务", "校园参观"],
+          timeline: [
+            {
+              time: "08:30",
+              title: "酒店前往东京大学",
+              content:
+                "三井ガーデンホテル六本木プレミア出发，约 9 公里，预计车程 30 分钟，前往东京大学社会科学研究所 1 楼第二会议室。"
+            },
+            {
+              time: "09:10",
+              title: "SMU 开课仪式",
+              content: "培训正式启动，建议现场配学校标识、欢迎页或合影环节。"
+            },
+            {
+              time: "09:40-12:00",
+              title: "丸川知雄教授授课",
+              content:
+                "课题为“日本经济现状与中国企业全球竞争力的思考”，其中 10:40-10:55 安排茶歇。"
+            },
+            {
+              time: "12:10-14:00",
+              title: "午餐与东京大学校园参观",
+              content:
+                "午餐后安排校园导览，由东京大学在读博士带领，帮助学员更立体地感受学术环境。"
+            },
+            {
+              time: "14:00-18:00",
+              title: "养老院参访交流",
+              content:
+                "前往神奈川县横滨市 Ra Kurarute Adult Day Care，实地参观机构运营，并与院方围绕日本老龄化服务经验展开交流。"
+            },
+            {
+              time: "晚间",
+              title: "返回酒店，自由安排",
+              content: "活动结束后返回东京酒店，晚间解散。"
+            }
+          ]
+        },
+        {
+          id: "day3",
+          code: "Day 3",
+          date: "11月17日 周二",
+          title: "先进制造与机器人创新",
+          status: "企业参访日",
+          summary:
+            "上午走进 FANUC 观察日本制造业代表企业的工厂管理与自动化实践，下午赴 GROOVE X 体验情感机器人产品与创新企业文化。",
+          tags: ["FANUC", "GROOVE X", "富士山打卡"],
+          timeline: [
+            {
+              time: "08:00-10:00",
+              title: "酒店前往发那科 FANUC",
+              content:
+                "从六本木酒店出发前往山梨县忍野村，约 120 公里，预计车程 2 小时。"
+            },
+            {
+              time: "10:00-11:40",
+              title: "见学与企业交流",
+              content:
+                "包括见面寒暄、观看公司视频、展示场和工厂参观见学，以及与接待团队交流。"
+            },
+            {
+              time: "12:00-13:20",
+              title: "午餐与富士山简要打卡",
+              content:
+                "午餐后视现场情况安排单点打卡，控制节奏，避免进入购物环境影响返程准点。"
+            },
+            {
+              time: "13:20-17:40",
+              title: "前往并参访 GROOVE X",
+              content:
+                "抵达后参观展馆，与 LOVOT 机器人互动，并围绕创新产品、用户体验和企业发展展开交流。"
+            },
+            {
+              time: "晚间",
+              title: "结束后灵活解散",
+              content: "愿意随车的学员可返回酒店，其余人员可在参访地解散。"
+            }
+          ]
+        },
+        {
+          id: "day4",
+          code: "Day 4",
+          date: "11月18日 周三",
+          title: "产业研究与资本市场观察",
+          status: "高校 + 机构 + 品牌",
+          summary:
+            "上午在早稻田大学系统学习日本优势产业图谱，下午进一步走进东京证券交易所，并拜访代表性品牌企业，形成课程与市场现场的联动。",
+          tags: ["早稻田大学", "东京证券交易所", "索尼/无印良品"],
+          timeline: [
+            {
+              time: "08:30-09:00",
+              title: "酒店前往早稻田大学",
+              content:
+                "前往西早稻田校区 55-S-510 会议室，预计车程 30 分钟。"
+            },
+            {
+              time: "09:00-12:00",
+              title: "樋口清秀教授授课",
+              content:
+                "课题为“日本优势产业图谱及失去的三十年”，10:15-10:30 安排茶歇。"
+            },
+            {
+              time: "12:00-14:00",
+              title: "午餐与校园参观",
+              content:
+                "午餐后安排早稻田大学校园参观，教室内可享用盒饭。"
+            },
+            {
+              time: "下午",
+              title: "东京证券交易所参访",
+              content:
+                "建议页面后续补充交易所画面或资本市场相关视觉元素。"
+            },
+            {
+              time: "15:30-17:30",
+              title: "拜访索尼或无印良品",
+              content:
+                "企业安排仍在确认中，页面当前保留索尼 / 无印良品双选占位，可待最终版本更新。"
+            }
+          ]
+        },
+        {
+          id: "day5",
+          code: "Day 5",
+          date: "11月19日 周四",
+          title: "企业经营与出海日本交流",
+          status: "经营实践 + 行业沙龙",
+          summary:
+            "上午参访株式会社寿屋了解本土企业经营逻辑，午后结合明治神宫的文化场景，随后通过出海日本主题沙龙进入更具实战价值的交流讨论。",
+          tags: ["寿屋", "明治神宫", "出海日本沙龙"],
+          timeline: [
+            {
+              time: "08:10-11:30",
+              title: "株式会社寿屋参访",
+              content:
+                "包括企业业务介绍、展厅参观、座谈交流与合影等环节，帮助学员理解品牌运营与海外业务发展。"
+            },
+            {
+              time: "11:30-15:15",
+              title: "午餐与明治神宫参观",
+              content:
+                "午餐后前往明治神宫，感受东京城市空间中的传统文化意象与节奏。"
+            },
+            {
+              time: "16:00-18:00",
+              title: "企业出海日本交流沙龙",
+              content:
+                "主题为“寻找新增量：出海日本的机遇与挑战”，拟邀多位企业家与日本市场实践者参与分享。"
+            },
+            {
+              time: "晚间",
+              title: "沙龙晚餐与返程",
+              content:
+                "晚餐地点为 traveller's house（大井町），结束后统一安排车辆返回酒店。"
+            }
+          ]
+        },
+        {
+          id: "day6",
+          code: "Day 6",
+          date: "11月20日 周五",
+          title: "城市更新与日本文化体验",
+          status: "设计观察 + 剑道体验",
+          summary:
+            "以三菱地所设计的城市更新视角切入，结合大手町、丸之内及皇居周边实地观察，下午通过剑道体验加深对日本礼仪与文化精神的理解。",
+          tags: ["三菱地所设计", "皇居", "剑道课程"],
+          timeline: [
+            {
+              time: "09:00-11:30",
+              title: "三菱地所设计株式会社参访",
+              content:
+                "包括视频及沙盘讲解、区域开发逻辑介绍，并可能结合会议室交流或现场考察。"
+            },
+            {
+              time: "11:30-13:30",
+              title: "皇居、二重桥步行与午餐",
+              content:
+                "在城市核心区观察空间秩序与更新成果，午餐信息待最终确认。"
+            },
+            {
+              time: "13:30-16:00",
+              title: "日本文化体验：剑道课程",
+              content:
+                "地点为新东京スポーツ文化館 BUMB，SMU 学员及教师 21 人入场体验，场内配备翻译支持。"
+            },
+            {
+              time: "16:10-16:40",
+              title: "返回酒店",
+              content: "课程结束后乘大巴返回酒店，晚间自由安排。"
+            }
+          ]
+        },
+        {
+          id: "day7",
+          code: "Day 7",
+          date: "11月21日 周六",
+          title: "EMBA 结业仪式与收官",
+          status: "仪式感收尾",
+          summary:
+            "培训最后一天前往九段会馆参加 EMBA 结业仪式，通过茶歇、分组与纪念环节，为本次一周研修留下正式而完整的收束。",
+          tags: ["九段会馆", "EMBA 结业仪式", "项目收官"],
+          timeline: [
+            {
+              time: "09:00-09:20",
+              title: "酒店前往九段会馆",
+              content: "约 5.5 公里，预计车程 20 分钟，适合作为收官仪式的统一集合动线。"
+            },
+            {
+              time: "09:30-11:30",
+              title: "EMBA 结业仪式",
+              content:
+                "含茶歇与分组环节，现场备注显示需分为 4 组，并准备 Great Wave 封面的 A5 卡片。"
+            },
+            {
+              time: "中午",
+              title: "午餐与返程接驳",
+              content:
+                "活动结束后可安排简餐便当及伴手礼，随后统一返回酒店或进入返程流程。"
+            }
+          ]
+        }
+      ];
+
+      document.documentElement.classList.add("enhanced-motion");
+
+      const nav = document.getElementById("schedule");
+      const dayList = document.getElementById("day-list");
+
+      nav.innerHTML = days
+        .map(
+          (day, index) =>
+            `<a class="day-link ${index === 0 ? "active" : ""}" href="#${day.id}">${day.code}</a>`
+        )
+        .join("");
+
+      dayList.innerHTML = days
+        .map(
+          (day, dayIndex) => `
+            <article class="day-card" id="${day.id}" style="--card-index:${dayIndex};">
+              <div class="day-head">
+                <div class="day-kicker">
+                  <span class="day-code">${day.code}</span>
+                  <span class="status-chip">${day.status}</span>
+                </div>
+                <div class="day-title">
+                  <strong>${day.title}</strong>
+                  <span>${day.date}</span>
+                </div>
+              </div>
+              <p class="day-summary">${day.summary}</p>
+              <ul class="day-tags">
+                ${day.tags.map((tag) => `<li>${tag}</li>`).join("")}
+              </ul>
+              <div class="timeline">
+                ${day.timeline
+                  .map(
+                    (item, itemIndex) => `
+                      <div class="timeline-item" style="--item-index:${itemIndex};">
+                        <div class="timeline-time">${item.time}</div>
+                        <div class="timeline-content">
+                          <strong>${item.title}</strong>
+                          <p>${item.content}</p>
+                        </div>
+                      </div>
+                    `
+                  )
+                  .join("")}
+              </div>
+            </article>
+          `
+        )
+        .join("");
+
+      const links = [...document.querySelectorAll(".day-link")];
+      const cards = [...document.querySelectorAll(".day-card")];
+      const brandLogo = document.querySelector(".brand-logo");
+      const brandMark = document.querySelector(".brand-mark");
+
+      if (brandLogo) {
+        if (brandLogo.complete && brandLogo.naturalWidth > 0) {
+          brandLogo.style.display = "block";
+          if (brandMark) brandMark.style.display = "none";
+        }
+
+        brandLogo.addEventListener("load", () => {
+          brandLogo.style.display = "block";
+          if (brandMark) brandMark.style.display = "none";
+        });
+
+        brandLogo.addEventListener("error", () => {
+          brandLogo.style.display = "none";
+          if (brandMark) brandMark.style.display = "inline";
+        });
+      }
+
+      const navObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            links.forEach((link) => {
+              link.classList.toggle(
+                "active",
+                link.getAttribute("href") === `#${entry.target.id}`
+              );
+            });
+          });
+        },
+        {
+          rootMargin: "-12% 0px -16% 0px",
+          threshold: 0.18
+        }
+      );
+
+      cards.forEach((card) => navObserver.observe(card));
+
+      const cardObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+            }
+          });
+        },
+        {
+          threshold: 0.08,
+          rootMargin: "0px 0px -4% 0px"
+        }
+      );
+
+      cards.forEach((card) => cardObserver.observe(card));
+    </script>
+  </body>
+</html>
