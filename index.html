@@ -1398,9 +1398,9 @@
             },
             {
               time: "18:30-20:30",
-              title: "交流沙龙与晚宴",
+              title: "紀尾井町福田家晚餐",
               content:
-                "晚餐安排于紀尾井町福田家，在正式晚宴氛围中延续当日关于产业与社会的交流。"
+                "于紀尾井町福田家安排晚餐，在正式晚宴氛围中延续当日关于产业与社会的交流。"
             }
           ]
         },
@@ -1408,7 +1408,7 @@
           id: "day5",
           code: "Day 4",
           date: "11月19日 周四",
-          title: "次元文化与交流沙龙与晚宴",
+          title: "次元文化与交流沙龙晚宴",
           status: "IP 观察 + 文化探索",
           summary:
             "上午参访株式会社寿屋观察 IP 商业化路径，下午前往明治神宫，在文化探索之后进入日本交流沙龙与晚宴环节。",
@@ -1434,9 +1434,8 @@
             },
             {
               time: "18:00-20:00",
-              title: "紀尾井町福田家晚餐",
-              content:
-                "晚餐交流在紀尾井町福田家进行，于正式晚宴氛围中延续当日的交流与讨论。"
+              title: "交流沙龙与晚宴",
+              content: ""
             }
           ]
         },
@@ -1544,7 +1543,7 @@
                         <div class="timeline-time">${item.time}</div>
                         <div class="timeline-content">
                           <strong>${item.title}</strong>
-                          <p>${item.content}</p>
+                          ${item.content ? `<p>${item.content}</p>` : ""}
                         </div>
                       </div>
                     `
